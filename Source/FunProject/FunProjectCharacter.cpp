@@ -8,6 +8,8 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/Controller.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "DrawDebugHelpers.h"
+#include "InteractableThing.h"
 
 //////////////////////////////////////////////////////////////////////////
 // AFunProjectCharacter
@@ -79,6 +81,20 @@ void AFunProjectCharacter::OnInteract()
 {
 	//test with a print line	
 	if (GEngine) GEngine->AddOnScreenDebugMessage(-1, 3, FColor::Green, "Hello world!");
+
+	FHitResult hit;
+	FVector start = GetActorLocation();
+	FVector end = start + GetActorForwardVector() * 200;
+
+	DrawDebugLine(GetWorld(), start, end, FColor::Red, false, 1);
+
+	if (GetWorld()->LineTraceSingleByChannel(hit, start, end, ECollisionChannel::ECC_Visibility))
+	{
+		if (IInteractableThing* obj = Cast<IInteractableThing>(hit.Actor))
+		{
+			obj->Interact();
+		}
+	}
 }
 
 void AFunProjectCharacter::OnShoot()
