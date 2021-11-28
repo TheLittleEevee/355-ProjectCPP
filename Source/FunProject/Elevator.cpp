@@ -64,10 +64,6 @@ void AElevator::OnConstruction(const FTransform& xform)
 
 	TheFloor->SetWorldScale3D(FVector(WidthOfElevator, DepthOfElevator, 50) / 100);
 
-	TheFloor->SetRelativeLocation(FVector(0, 0, 0));
-
-	//MovingRoot->SetRelativeLocation(FVector(0, 0, 0));
-
 	TheFrame->ClearInstances();
 
 
@@ -78,26 +74,13 @@ void AElevator::OnConstruction(const FTransform& xform)
 
 void AElevator::Interact()
 {
-	if (GEngine) GEngine->AddOnScreenDebugMessage(-1, 3, FColor::Green, "Player interacted with elevator");
-
-
 	if (TheFloor->GetRelativeLocation() == FVector(0, 0, 0))
 	{
-		if (GEngine) GEngine->AddOnScreenDebugMessage(-1, 3, FColor::Green, "At start");
-
 		speed = 300;
-
-		//TheFloor->MoveComponent(FVector(0, 0, HeightOfElevator), FRotator(TheFloor->GetRelativeRotation()), false);
-		
 	}
 	else if (TheFloor->GetRelativeLocation() == FVector(0, 0, HeightOfElevator))
 	{
-		if (GEngine) GEngine->AddOnScreenDebugMessage(-1, 3, FColor::Green, "At top");
-
 		speed = -300;
-
-		//TheFloor->MoveComponent(FVector(0, 0, -HeightOfElevator), FRotator(TheFloor->GetRelativeRotation()), false);
-		
 	}
 	else
 	{
