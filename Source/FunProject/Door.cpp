@@ -11,7 +11,7 @@ ADoor::ADoor()
 
 	TheRoot = CreateDefaultSubobject<USceneComponent>(FName("TheRoot"));
 	RootComponent = TheRoot;
-	//TheRoot->SetuoAttachment(RootComponent);
+	//TheRoot->SetupAttachment(RootComponent);
 
 	TheHinge = CreateDefaultSubobject<USceneComponent>(FName("TheHinge"));
 	TheHinge->SetupAttachment(TheRoot);

@@ -85,10 +85,19 @@ void AFunProjectCharacter::OnInteract()
 	FHitResult hit;
 	FVector start = GetActorLocation();
 	FVector end = start + GetActorForwardVector() * 200;
+	FVector bottomEnd = start - GetActorUpVector() * 200;
 
 	DrawDebugLine(GetWorld(), start, end, FColor::Red, false, 1);
+	DrawDebugLine(GetWorld(), start, bottomEnd, FColor::Red, false, 1);
 
 	if (GetWorld()->LineTraceSingleByChannel(hit, start, end, ECollisionChannel::ECC_Visibility))
+	{
+		if (IInteractableThing* obj = Cast<IInteractableThing>(hit.Actor))
+		{
+			obj->Interact();
+		}
+	}
+	else if (GetWorld()->LineTraceSingleByChannel(hit, start, bottomEnd, ECollisionChannel::ECC_Visibility))
 	{
 		if (IInteractableThing* obj = Cast<IInteractableThing>(hit.Actor))
 		{
