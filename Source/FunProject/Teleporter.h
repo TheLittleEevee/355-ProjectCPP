@@ -36,13 +36,13 @@ public:
 	class UInstancedStaticMeshComponent* TeleporterPad;
 
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Elevator Stuff")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Teleporter Stuff")
 	float WidthOfPad = 200;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Elevator Stuff")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Teleporter Stuff")
 	float HeightOfPad = 80;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Elevator Stuff")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Teleporter Stuff")
 	float DepthOfPad = 200;
 
 protected:

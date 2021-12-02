@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-
+#include "Components/TimelineComponent.h"
 #include "UObject/ConstructorHelpers.h"
 #include "InteractableThing.h"
 
@@ -35,6 +35,8 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	class UInstancedStaticMeshComponent* TheFrame;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Elevator Stuff")
+	UCurveFloat* moveCurve;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Elevator Stuff")
 	float WidthOfElevator = 300;
@@ -55,6 +57,13 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+
+	UFUNCTION()
+	void OnAnimUpdate(float val);
+
+	UTimelineComponent* ElevatorAnim;
+
+	bool goingDown = false;
 
 public:	
 	// Called every frame

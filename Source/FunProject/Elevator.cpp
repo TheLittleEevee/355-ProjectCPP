@@ -21,6 +21,8 @@ AElevator::AElevator()
 	TheFrame = CreateDefaultSubobject<UInstancedStaticMeshComponent>(FName("TheFrame"));
 	TheFrame->SetupAttachment(TheRoot);
 
+	ElevatorAnim = CreateDefaultSubobject<UTimelineComponent>(FName("Elevator movement timeline"));
+
 	ConstructorHelpers::FObjectFinder<UStaticMesh> TheCubeMesh(TEXT("/Game/Art/Meshes/1M_Cube"));
 
 	if (TheCubeMesh.Object)
@@ -32,11 +34,29 @@ AElevator::AElevator()
 	CurrentLocation = TheFloor->GetRelativeLocation();
 }
 
+void AElevator::OnAnimUpdate(float val)
+{
+	//FRotator rot(0, val * 90, 0);
+	//if (IsDoorFlipped) rot.Yaw *= -1;
+	//TheHinge->SetRelativeRotation(rot);
+
+	FVector vec(0, 0, val * HeightOfElevator);
+	MovingRoot->SetRelativeLocation(vec);
+}
+
 // Called when the game starts or when spawned
 void AElevator::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	if (moveCurve)
+	{
+		FOnTimelineFloat eventHandler;
+		eventHandler.BindUFunction(this, TEXT("OnAnimUpdate"));
+		//eventHandler.BindDynamic(this, &ADoor::OnAnimUpdate);
+		ElevatorAnim->AddInterpFloat(moveCurve, eventHandler, FName("Handle curve func"));
+		ElevatorAnim->SetTimelineLengthMode(ETimelineLengthMode::TL_LastKeyFrame); //Set to use last keyframe as time of timeline
+	}
 }
 
 // Called every frame
@@ -44,6 +64,7 @@ void AElevator::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	/**
 	CurrentLocation.Z += speed * DeltaTime;
 	if (CurrentLocation.Z >= HeightOfElevator)
 	{
@@ -56,6 +77,7 @@ void AElevator::Tick(float DeltaTime)
 		CurrentLocation.Z = 0;
 	}
 	TheFloor->SetRelativeLocation(CurrentLocation);
+	**/
 }
 
 void AElevator::OnConstruction(const FTransform& xform)
@@ -74,6 +96,7 @@ void AElevator::OnConstruction(const FTransform& xform)
 
 void AElevator::Interact()
 {
+	/**
 	if (TheFloor->GetRelativeLocation() == FVector(0, 0, 0))
 	{
 		speed = 300;
@@ -86,5 +109,18 @@ void AElevator::Interact()
 	{
 		if (speed == 300) speed = -300;
 		else speed = 300;
+	}
+	**/
+
+	if (goingDown)
+	{
+		ElevatorAnim->Reverse();
+		goingDown = false;
+	}
+	else
+	{
+		ElevatorAnim->Play();
+		goingDown = true;
+
 	}
 }
